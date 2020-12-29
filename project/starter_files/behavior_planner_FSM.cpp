@@ -82,7 +82,8 @@ double BehaviorPlannerFSM::get_look_ahead_distance(const State& ego_state) {
   // KZOH: s = (vo^2) / (2 * a)
   // KZOH: Not sure wich vo and a to use. vo is hte current car speed: velocity_mag = utils::magnitude(ego_state.velocity); seems Ok. a? Should be constant??? accel_mag = utils::magnitude(ego_state.acceleration); I used: a = -5 m/s2 (15 feet per second): https://www.google.com/search?q=what+is+the+average+deceleration+of+a+car&oq=What+is+the+average+deceleration+of+a+car&aqs=chrome.0.0i457.1146j0j7&sourceid=chrome&ie=UTF-8
   auto look_ahead_distance = 1.0;  // <- Fix This  //KZOH
-  look_ahead_distance = (ego_state.velocity*ego_state.velocity) / (2.0*5.0)  //KZOH - Done
+  auto velocity_mag_tmp = utils::magnitude(ego_state.velocity);  
+  look_ahead_distance = (velocity_mag_tmp * velocity_mag_tmp) / (2.0*P_MAX_ACCEL/5.0);  //KZOH - Done a_max = 5, chosen a= a_max/5
   LOG(INFO) << "Calculated look_ahead_distance: " << look_ahead_distance;
 
   look_ahead_distance =
@@ -189,7 +190,7 @@ State BehaviorPlannerFSM::state_transition(const State& ego_state, State goal,
     if (distance_to_stop_sign <= P_STOP_THRESHOLD_DISTANCE) { //KZOH - Done
       // TODO-move to STOPPED state: Now that we know we are close or at the
       // stopping point we should change state to "STOPPED"
-      active_maneuver = ;STOPPED  // <- Fix This //KZOH - Done
+      _active_maneuver = STOPPED;  // <- Fix This //KZOH - Done
       _start_stop_time = std::chrono::high_resolution_clock::now();
       // LOG(INFO) << "BP - changing to STOPPED";
     }
