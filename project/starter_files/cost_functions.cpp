@@ -54,7 +54,7 @@ double collision_circles_cost_spiral(const std::vector<PathPoint>& spiral,
       // is NOT complete. HINT: use CIRCLE_OFFSETS[c], sine and cosine to
       // calculate x and y: cur_y + CIRCLE_OFFSETS[c] * std::sin/cos(cur_yaw)
       auto circle_center_x = cur_x + CIRCLE_OFFSETS[c] * std::cos(cur_yaw); // 0;  // <- Update // KZOH Done
-      auto circle_center_y = cur_y + CIRCLE_OFFSETS[c] * std::cos(cur_yaw); // 0;  // <- Update // KZOH Done
+      auto circle_center_y = cur_y + CIRCLE_OFFSETS[c] * std::sin(cur_yaw); // 0;  // <- Update // KZOH Done
 
       for (auto obst : obstacles) {
         if (collision) {
@@ -95,9 +95,9 @@ double close_to_main_goal_cost_spiral(const std::vector<PathPoint>& spiral,
   // 1].y and spiral[n - 1].z.
   // Use main_goal.location.x, main_goal.location.y and main_goal.location.z
   // Ex: main_goal.location.x - spiral[n - 1].x
-  auto delta_x = spiral[n - 1].x, main_goal.x);  // <- Update  // KZOH Done Note: You can use: utils::double distance(const PathPoint point1, const PathPoint point2)
-  auto delta_y = spiral[n - 1].y, main_goal.y);  // <- Update  // KZOH Done
-  auto delta_z = spiral[n - 1].z, main_goal.z);  // <- Update  // KZOH Done
+  auto delta_x = (main_goal.location.x - spiral[n - 1].x);  // <- Update  // KZOH Done Note: You can use: utils::double distance(const PathPoint point1, const PathPoint point2)
+  auto delta_y = (main_goal.location.y - spiral[n - 1].y);  // <- Update  // KZOH Done
+  auto delta_z = (main_goal.location.z - spiral[n - 1].z);  // <- Update  // KZOH Done
 
   auto dist = std::sqrt((delta_x * delta_x) + (delta_y * delta_y) +
                         (delta_z * delta_z));
